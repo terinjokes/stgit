@@ -1,0 +1,1730 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
+<title>Stacked Git</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>Stacked Git</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>StGit is a Python application providing similar functionality to Quilt
+(i.e. pushing/popping patches to/from a stack) on top of Git. These
+operations are performed using Git commands and the patches are stored
+as Git commit objects, allowing easy merging of the StGit patches into
+other repositories using standard Git functionality. StGit is licensed
+under the <a href="http://www.gnu.org/licenses/gpl.txt">GNU General Public
+License</a>.</p></div>
+<div class="paragraph"><p>Note that StGit is not an SCM interface on top of Git and it expects
+a previously initialised Git repository. For standard SCM operations,
+either use plain Git commands or the Cogito tool.</p></div>
+<div class="paragraph"><p>For more information, see the README file in the archive.</p></div>
+<div class="paragraph"><p>Please report bugs via the
+<a href="https://gna.org/bugs/?func=additem&amp;group=stgit">project
+page</a> or the <a href="stgit-users@gna.org">StGit</a> users mailing list.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_documentation">Documentation</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>A <a href="tutorial.html">StGit Tutorial</a> is available to get you started.</p></div>
+<div class="paragraph"><p>The complete <a href="stg.html">StGit man page</a> collection is available as well.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_news">News</h2>
+<div class="sectionbody">
+<div class="ulist"><div class="title">2012-01-09: StGit-0.16 released</div><ul>
+<li>
+<p>
+Several improvements to the Emacs mode (stgit.el)
+</p>
+</li>
+<li>
+<p>
+UI adjustments to better match the Git commands.
+</p>
+</li>
+<li>
+<p>
+<em>stg status</em> is an alias for <em>git status</em>.
+</p>
+</li>
+<li>
+<p>
+<em>stg reset --hard</em> behaves similarly to the corresponding git command and option.
+</p>
+</li>
+<li>
+<p>
+<em>stg branch --cleanup</em> option to remove the StGit metadata for a given branch.
+</p>
+</li>
+<li>
+<p>
+<em>stg mail</em> can use <em>git send-email</em> directly.
+</p>
+</li>
+<li>
+<p>
+Vim syntax highlighting for StGit commit messages.
+</p>
+</li>
+<li>
+<p>
+Many bug-fixes.
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2009-10-24: StGit-0.15 released</div><ul>
+<li>
+<p>
+New core infrastructure for repository operations, including infinite undo/redo operations and automatic rollback of changes following a failed operation (using transactions)
+</p>
+</li>
+<li>
+<p>
+Some commands were added, including <em>stg squash</em> (for combining two or more patches into one), <em>stg publish</em> (for maintaining merge-friendly branches which are never rebased) and <em>stg prev/next</em> (for printing the name of the previous or next patch in the series)
+</p>
+</li>
+<li>
+<p>
+The commands <em>stg add</em>, <em>stg rm</em>, <em>stg cp</em>, and <em>stg resolved</em> were removed, since there are corresponding Git equivalents
+</p>
+</li>
+<li>
+<p>
+The <em>stg import</em> and <em>stg fold</em> commands support the <em>-p N</em> option for stripping leading slashes from diff paths
+</p>
+</li>
+<li>
+<p>
+The <em>stg import</em> and <em>stg fold</em> commands support the <em>--reject</em> option for leaving rejected hunks in corresponding *.rej files
+</p>
+</li>
+<li>
+<p>
+New patch identification syntax: &lt;branch&gt;:&lt;patch&gt; (see documentation for the <em>stg id</em> command)
+</p>
+</li>
+<li>
+<p>
+Autosigning of imported patches when <em>sign.autosign</em> configuration option is set
+</p>
+</li>
+<li>
+<p>
+A powerful Emacs mode for StGit was added to the <em>contrib</em> directory. It displays the patch stack in an Emacs buffer, and can handle all common StGit tasks
+</p>
+</li>
+<li>
+<p>
+Improved bash tab-completion, automatically generated from the stg command definitions
+</p>
+</li>
+<li>
+<p>
+Man pages and an improved tutorial
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2009-04-10: StGit repository moved to repo.or.cz</div><ul>
+<li>
+<p>
+The StGit repository was moved to git://repo.or.cz/stgit.git. The previous HTTP-based Git repository is no longer updated and it will be removed in the future. To update the cloned trees, run <em>git remote rm origin; git remote add origin git://repo.or.cz/stgit.git</em>
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2008-06-08: StGit-0.14.3 released</div><ul>
+<li>
+<p>
+This is a maintenance release including bug-fixes for the <em>refresh</em> command, handling of file names with non-ASCII characters and user interface enhancements for <em>export</em> and <em>sync</em>
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2008-03-24: StGit-0.14.2 released</div><ul>
+<li>
+<p>
+This is a maintenance release including bug-fixes and a few user interface enhancements
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2007-12-12: StGit-0.14.1 released</div><ul>
+<li>
+<p>
+Fixed typo in the required version of Python
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2007-12-10: StGit-0.14 released</div><ul>
+<li>
+<p>
+Support for correctly running StGit in subdirectories
+</p>
+</li>
+<li>
+<p>
+<em>repair</em> command for fixing an StGit repository modified by Git commands such as <em>commit</em>, <em>pull</em>, <em>merge</em> or <em>rebase</em>
+</p>
+</li>
+<li>
+<p>
+<em>edit</em> command for editing both the patch description and diff
+</p>
+</li>
+<li>
+<p>
+Support for SMTP over TLS
+</p>
+</li>
+<li>
+<p>
+Support for MIME multipart e-mail templates
+</p>
+</li>
+<li>
+<p>
+<em>--attach</em> option to the <em>mail</em> command to send a patch attached rather than inline
+</p>
+</li>
+<li>
+<p>
+Diff statistics and shortlog added to the cover e-mail template
+</p>
+</li>
+<li>
+<p>
+<em>--sign/ack</em> options to the <em>import</em> and <em>new</em> commands
+</p>
+</li>
+<li>
+<p>
+<em>--number</em> to the <em>log</em> command for limiting the output
+</p>
+</li>
+<li>
+<p>
+Support for binary files in patches
+</p>
+</li>
+<li>
+<p>
+Support for detached HEAD
+</p>
+</li>
+<li>
+<p>
+Refactoring of some modules with better support for debugging
+</p>
+</li>
+<li>
+<p>
+Many bug-fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2007-07-26: StGit-0.13 released</div><ul>
+<li>
+<p>
+Documentation directory with man pages
+</p>
+</li>
+<li>
+<p>
+Safety checks for the <em>rebase</em> command
+</p>
+</li>
+<li>
+<p>
+Various contrib scripts
+</p>
+</li>
+<li>
+<p>
+<em>cp</em> command to copy files
+</p>
+</li>
+<li>
+<p>
+<em>sink</em> command to complement <em>float</em>
+</p>
+</li>
+<li>
+<p>
+<em>--diff-opts</em> option to some commands for passing additional arguments to <em>git-diff-*</em>
+</p>
+</li>
+<li>
+<p>
+<em>stgit.mail.prefix</em> configuration option for the default <em>mail --prefix</em> value
+</p>
+</li>
+<li>
+<p>
+Interractive 2-way merging via xxdiff or emacs (previously, only 3-way merging had this feature)
+</p>
+</li>
+<li>
+<p>
+Slightly changed behaviour to the <em>patches</em> command when no argument is given to show the patches touching the locally modified files
+</p>
+</li>
+<li>
+<p>
+Correct importing of multipart e-mails
+</p>
+</li>
+<li>
+<p>
+<em>--unrelated</em> option to <em>mail</em> to send patches unthreaded and without sequence numbering
+</p>
+</li>
+<li>
+<p>
+<em>--update</em> option to <em>refresh</em> to only check in the files already modified by the current patch (similar to <em>pick --update</em>)
+</p>
+</li>
+<li>
+<p>
+<em>--keep</em> option to <em>goto</em> (though it only works for patch popping)
+</p>
+</li>
+<li>
+<p>
+<em>--expose</em> option to <em>pick</em> to append the picked commit id to the log (similar to the <em>git cherry-pick -x</em> command)
+</p>
+</li>
+<li>
+<p>
+The <em>new</em> command can automatically generate the patch name from the given log
+</p>
+</li>
+<li>
+<p>
+<em>uncommit</em> can generate patches up to a given commit id
+</p>
+</li>
+<li>
+<p>
+Bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2007-02-23: StGit-0.12.1 released</div><ul>
+<li>
+<p>
+Allow StGit to run when there is no user information configured
+</p>
+</li>
+<li>
+<p>
+Use <em>git-pull</em> rather than <em>git-fetch</em> by default
+</p>
+</li>
+<li>
+<p>
+Fix the <em>mail</em> command to parse multiple-lines address headers
+</p>
+</li>
+<li>
+<p>
+Fix the alias check in the <em>stg mail --bcc</em> command
+</p>
+</li>
+<li>
+<p>
+Add <em>--merged</em> option to rebase
+</p>
+</li>
+<li>
+<p>
+Add <em>--url</em> option to <em>import</em> to import a file directly from the network
+</p>
+</li>
+<li>
+<p>
+Add <em>--author</em> option to <em>series</em>
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2007-02-06: StGit-0.12 released</div><ul>
+<li>
+<p>
+New <em>rebase</em> command to change the base of an StGit stack
+</p>
+</li>
+<li>
+<p>
+New <em>hide</em> and <em>unhide</em> commands to act on the patches in a series. Additional options were added to <em>series</em> for displaying the hidden patches
+</p>
+</li>
+<li>
+<p>
+New <em>sync</em> command to synchronise same patches in different branches
+</p>
+</li>
+<li>
+<p>
+New <em>assimilate</em> command to transform Git (accidental) commits at the top of the stack in StGit patches
+</p>
+</li>
+<li>
+<p>
+Re-worked pulling logic to use the branch information stored in the .git/config file
+</p>
+</li>
+<li>
+<p>
+Abbreviation for StGit commands
+</p>
+</li>
+<li>
+<p>
+Correct encoding of the e-mail headers and body
+</p>
+</li>
+<li>
+<p>
+Support for importing multipart e-mails and mbox files
+</p>
+</li>
+<li>
+<p>
+Configuration read from the Git config files rather than stgitrc
+</p>
+</li>
+<li>
+<p>
+Patch ranges can be specified for <em>export</em>
+</p>
+</li>
+<li>
+<p>
+<em>--missing</em> option for <em>series</em> to list the patches on a branch which are missing in current
+</p>
+</li>
+<li>
+<p>
+StGit bash completion script
+</p>
+</li>
+<li>
+<p>
+Bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2006-10-21: StGit-0.11 released</div><ul>
+<li>
+<p>
+New <em>float</em> command to bring a range patches to the top of the stack. This command can also take a series file as a parameter, allowing easy reordering of the patches
+</p>
+</li>
+<li>
+<p>
+Patch history support, accessible through the <em>log [--graphical]</em> command
+</p>
+</li>
+<li>
+<p>
+Use the <em>..</em> syntax for patch ranges instead of <em>:</em>
+</p>
+</li>
+<li>
+<p>
+<em>--keep</em> option for <em>pop</em> to preserve the local changes (useful to add the modifications to a different patch)
+</p>
+</li>
+<li>
+<p>
+<em>--graphical</em> option for <em>series</em> to invoke gitk instead of listing the patches
+</p>
+</li>
+<li>
+<p>
+Automatically generate patch names for the <em>import</em>, <em>pick</em> and <em>uncommit</em> commands
+</p>
+</li>
+<li>
+<p>
+<em>--noreply</em> option for <em>mail</em> to not send messages as replies to the first one. This is useful for mailing lists filtering replies with a different subject
+</p>
+</li>
+<li>
+<p>
+<em>--interactive</em> option for <em>resolved</em> to invoke a graphical 3-way merge tool (xxdiff or emacs)
+</p>
+</li>
+<li>
+<p>
+<em>--sign</em> and <em>--ack</em> options for <em>refresh</em> to sign off or acknowledge a patch
+</p>
+</li>
+<li>
+<p>
+Diff colouring pager script added to the contrib directory
+</p>
+</li>
+<li>
+<p>
+Configurable low-level pull command (i.e. git-pull)
+</p>
+</li>
+<li>
+<p>
+<em>--auto</em> option for <em>mail</em> to automatically cc the patch signers
+</p>
+</li>
+<li>
+<p>
+Debian package support files
+</p>
+</li>
+<li>
+<p>
+Bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2006-06-11:StGit-0.10 released</div><ul>
+<li>
+<p>
+Handle branch names with slashes
+</p>
+</li>
+<li>
+<p>
+Testsuite framework
+</p>
+</li>
+<li>
+<p>
+Configurable file extensions for merge conflicts
+</p>
+</li>
+<li>
+<p>
+<em>goto</em> command, equivalent to <em>pop --to</em> or <em>push --to</em>
+</p>
+</li>
+<li>
+<p>
+<em>--update</em> option for <em>pick</em> to only fold the changes to files already in the current patch
+</p>
+</li>
+<li>
+<p>
+<em>--replace</em> option for <em>import</em> to replace existing patches in the series
+</p>
+</li>
+<li>
+<p>
+Look for templates in ~/.stgit/templates as well
+</p>
+</li>
+<li>
+<p>
+Allow multiple patch names on the <em>push</em> command line
+</p>
+</li>
+<li>
+<p>
+Classify commands in <em>stg --help</em> output
+</p>
+</li>
+<li>
+<p>
+Bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2006-04-07: StGit-0.9 released</div><ul>
+<li>
+<p>
+Faster three-way merge by using <em>git-read-tree --aggressive</em> and dealing with conflicts internally (gitmergeonefile.py removed)
+</p>
+</li>
+<li>
+<p>
+StGit repositories are now <em>git prune</em>-safe
+</p>
+</li>
+<li>
+<p>
+<em>show</em> command for displaying a given patch
+</p>
+</li>
+<li>
+<p>
+<em>uncommit</em> command for reversing the effects of <em>commit</em>
+</p>
+</li>
+<li>
+<p>
+<em>--series</em> option added to the <em>import</em> command
+</p>
+</li>
+<li>
+<p>
+<em>--merged</em> option added to the <em>push</em> and <em>pull</em> commands to check for patches merged upstream
+</p>
+</li>
+<li>
+<p>
+<em>--undo</em> option added to <em>refresh</em>
+</p>
+</li>
+<li>
+<p>
+Patch refreshing can be done for individual files only
+</p>
+</li>
+<li>
+<p>
+<em>--stdout</em> option added to <em>export</em>
+</p>
+</li>
+<li>
+<p>
+<em>--mbox</em> option added to <em>mail</em>
+</p>
+</li>
+<li>
+<p>
+<em>smtpdelay</em> configuration option for delays between messages sending
+</p>
+</li>
+<li>
+<p>
+$PAGER or the <em>pager</em> configuration option used for the <em>show</em> and <em>diff</em> commands
+</p>
+</li>
+<li>
+<p>
+<em>--force</em> option removed from the <em>new</em> command
+</p>
+</li>
+<li>
+<p>
+Bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2006-01-22: StGit-0.8.1 released</div><ul>
+<li>
+<p>
+Fix the removal vs. change merging conflict
+</p>
+</li>
+<li>
+<p>
+<em>clone</em> command fixed
+</p>
+</li>
+<li>
+<p>
+<em>status --reset &lt;file&gt;</em> command fixed
+</p>
+</li>
+<li>
+<p>
+typos corrected
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2005-12-23: StGit-0.8 released</div><ul>
+<li>
+<p>
+<em>branch</em> command for the Git branches manipulation: creation, deletion, switching, renaming, cloning (including the StGit patches)
+</p>
+</li>
+<li>
+<p>
+<em>patches</em> command to show the StGit patches modifying a file
+</p>
+</li>
+<li>
+<p>
+Better visualisation of the StGit patches and branches (a short description can be displayed)
+</p>
+</li>
+<li>
+<p>
+<em>--fold</em> option for the <em>pick</em> command to allow folding a given commit onto an existing patch
+</p>
+</li>
+<li>
+<p>
+Automatic invocation of the editor for the cover message when sending a series by e-mail
+</p>
+</li>
+<li>
+<p>
+StGit informs when a patch was modified during a push or pick operation (i.e. a three-way merge was needed)
+</p>
+</li>
+<li>
+<p>
+StGit now complies with the recommended format for the author information in the patch description (both for sending and receiving)
+</p>
+</li>
+<li>
+<p>
+Further optimisations
+</p>
+</li>
+<li>
+<p>
+Bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2005-10-15: StGit-0.7.1 released</div><ul>
+<li>
+<p>
+<em>push</em> command optimisation - git-apply will be tried first, falling back to a three-way merge if it does not succeed
+</p>
+</li>
+<li>
+<p>
+escape punctuation in the parsed e-mail addresses to avoid problems when passing the environment to the Git commands
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2005-10-02: StGit-0.7 released</div><ul>
+<li>
+<p>
+Uses the renamed Git commands (requires Git ≥ 0.99.7)
+</p>
+</li>
+<li>
+<p>
+<em>pick</em> command to cherry-pick a commit object as an StGit patch using a three-way merge. It also allows reverse-applying
+</p>
+</li>
+<li>
+<p>
+<em>commit</em> command to permanently store the applied patches into the repository
+</p>
+</li>
+<li>
+<p>
+<em>push</em> can now fast-forward the patches if the base tree object has not changed
+</p>
+</li>
+<li>
+<p>
+The configuration file supports the <em>editor</em> field
+</p>
+</li>
+<li>
+<p>
+<em>--version</em> option for the <em>mail</em> command to generate the e-mail subject in the form <em>[PATCH version nr/total]</em>
+</p>
+</li>
+<li>
+<p>
+<em>--showpatch</em> option for <em>refresh</em> to show the patch content when editing the patch description
+</p>
+</li>
+<li>
+<p>
+<em>--branch</em> option for several commands to work on a given branch instead of the current one without switching
+</p>
+</li>
+<li>
+<p>
+the <em>pull</em> command was updated to follow the <em>git pull</em> API
+</p>
+</li>
+<li>
+<p>
+<em>--base</em> option for <em>import</em> to import a diff file on a different base and perform a three-way merge with the HEAD afterwards
+</p>
+</li>
+<li>
+<p>
+Support for the <em>.gitignore</em> file
+</p>
+</li>
+<li>
+<p>
+Several other optimisations
+</p>
+</li>
+<li>
+<p>
+Bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2005-08-21: StGit-0.6 released</div><ul>
+<li>
+<p>
+StGit can now be installed in other directory than /usr (the default prefix is now $HOME). The <em>/etc/stgitrc</em> file is no longer installed since the defaults are hard-coded in StGit
+</p>
+</li>
+<li>
+<p>
+<em>clone</em> command implemented
+</p>
+</li>
+<li>
+<p>
+<em>fold</em> command implemented. This command integrates a GNU diff patch into the current patch. It can also do a three-way merge
+</p>
+</li>
+<li>
+<p>
+<em>--edit</em> option for <em>import</em>. This option allows one to modify the patch description during the import operation
+</p>
+</li>
+<li>
+<p>
+The <em>%(number)s</em> variable added to the e-mail templates which expands to ' number/total' if total &gt; 1 or empty if total is 1
+</p>
+</li>
+<li>
+<p>
+The README file is almost empty since the documentation moved to the web
+</p>
+</li>
+<li>
+<p>
+Bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2005-07-30: StGit-0.5 released</div><ul>
+<li>
+<p>
+Improved help for commands
+</p>
+</li>
+<li>
+<p>
+<em>mail</em> command to automatically e-mail a range of patches. The e-mail format is fully configurable via templates
+</p>
+</li>
+<li>
+<p>
+<em>import</em> command to import a GNU diff patch. The patch file can be a standard e-mail message or a normal file with the patch description at the top
+</p>
+</li>
+<li>
+<p>
+<em>pull</em> command to automatically advance the base of the stack and merge the changes into the applied patches
+</p>
+</li>
+<li>
+<p>
+<em>clean</em> command to delete the empty patches in a series
+</p>
+</li>
+<li>
+<p>
+<em>rename</em> command to change the name of a patch
+</p>
+</li>
+<li>
+<p>
+<em>--range</em> option for the <em>export</em> command
+</p>
+</li>
+<li>
+<p>
+<em>--force</em> option for the <em>new</em> command to create a patch even if there are local changes in the tree
+</p>
+</li>
+<li>
+<p>
+Default templates for the <em>export</em> and <em>mail</em> commands (installed in /usr/share/stgit/templates/)
+</p>
+</li>
+<li>
+<p>
+Bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2005-07-09: StGit-0.4 released</div><ul>
+<li>
+<p>
+Support for configuration files (/etc/stgitrc, ~/.stgitrc, .git/stgitrc)
+</p>
+</li>
+<li>
+<p>
+Configurable merge tool (<em>diff3</em> by default)
+</p>
+</li>
+<li>
+<p>
+Empty patches are marked with a <em>0</em> when listed with <em>series</em> (useful for tracking upstream merges)
+</p>
+</li>
+<li>
+<p>
+Support for patch description templates (with variables like author details and diffstats)
+</p>
+</li>
+<li>
+<p>
+<em>files</em> command to show the files modified by a patch (either a simple list or with diffstats)
+</p>
+</li>
+<li>
+<p>
+<em>push --undo</em> option to cancel a push operation
+</p>
+</li>
+<li>
+<p>
+<em>push/pop --to</em> option to perform the operation on a range of patches between the given names
+</p>
+</li>
+<li>
+<p>
+<em>push --reverse</em> option to push patches in reverse order
+</p>
+</li>
+<li>
+<p>
+<em>diff --stat</em> option to show the diffstats instead of the diff
+</p>
+</li>
+<li>
+<p>
+Faster <em>pop</em> - it now switches directly to the bottom of the last patch to be popped
+</p>
+</li>
+<li>
+<p>
+The three files involved in a three-way merge are left in the working tree in case of a conflict for further analysis (can be overwritten with the <em>keeporig</em> option)
+</p>
+</li>
+<li>
+<p>
+Many bug fixes
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2005-06-28: StGit-0.3 released</div><ul>
+<li>
+<p>
+closer to the Quilt functionality
+</p>
+</li>
+<li>
+<p>
+there is only one commit object per patch which can be indefinitely modified using the <em>refresh</em> command. The commit objects are stacked on top of the base and can also be accessed via standard Git commands
+</p>
+</li>
+<li>
+<p>
+no <em>commit</em> command. Use <em>refresh</em> instead
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2005-06-20: StGit-0.2 released</div><ul>
+<li>
+<p>
+Multiple heads are supported. Each head has its own series (needs separate <em>stg init</em> commands for each head). To change between series, simply change the .git/HEAD link
+</p>
+</li>
+<li>
+<p>
+top/bottom files for each patch are backed up as a safety measure
+</p>
+</li>
+<li>
+<p>
+<em>stg push</em> warns when the patch is empty (i.e. it was already merged upstream)
+</p>
+</li>
+<li>
+<p>
+Many bug fixes. The tool is now usable
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">2005-06-16: StGit-0.1 released</div><ul>
+<li>
+<p>
+Initial commit
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_downloads">Downloads</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="http://download.gna.org/stgit/">StGit on Gna!</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://repo.or.cz/w/stgit.git">Git Repository</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/terinjokes/stgit">Unofficial Git mirror on GitHub</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_acknowledgements">Acknowledgements</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Many thanks to Karl Wiberg, Yann Dirson, Chuck Lever and Paolo "Blaisorblade" Giarrusso for their great contribution to the development of StGit. Many thanks to all the people who contributed patches, ideas or reported bugs.</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2015-05-21 14:50:46 PDT
+</div>
+</div>
+</body>
+</html>
